@@ -211,7 +211,6 @@ func (x *ScreenView) GetUniqueId() string {
 type ElementSelector struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	UniqueId      string                 `protobuf:"bytes,1,opt,name=unique_id,json=uniqueId,proto3" json:"unique_id,omitempty"`
-	Path          []int32                `protobuf:"varint,2,rep,packed,name=path,proto3" json:"path,omitempty"`
 	Regex         string                 `protobuf:"bytes,4,opt,name=regex,proto3" json:"regex,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -252,13 +251,6 @@ func (x *ElementSelector) GetUniqueId() string {
 		return x.UniqueId
 	}
 	return ""
-}
-
-func (x *ElementSelector) GetPath() []int32 {
-	if x != nil {
-		return x.Path
-	}
-	return nil
 }
 
 func (x *ElementSelector) GetRegex() string {
@@ -327,14 +319,11 @@ type Finger struct {
 	//
 	//	*Finger_StartPoint
 	//	*Finger_StartElement
-	Start isFinger_Start `protobuf_oneof:"start"`
-	// Types that are valid to be assigned to End:
-	//
-	//	*Finger_EndPoint
-	//	*Finger_EndElement
-	End           isFinger_End `protobuf_oneof:"end"`
-	Duration      int32        `protobuf:"varint,6,opt,name=duration,proto3" json:"duration,omitempty"`
-	KeepDown      bool         `protobuf:"varint,7,opt,name=keep_down,json=keepDown,proto3" json:"keep_down,omitempty"`
+	Start         isFinger_Start `protobuf_oneof:"start"`
+	Width         uint32         `protobuf:"varint,2,opt,name=width,proto3" json:"width,omitempty"`
+	Height        uint32         `protobuf:"varint,3,opt,name=height,proto3" json:"height,omitempty"`
+	Duration      int32          `protobuf:"varint,6,opt,name=duration,proto3" json:"duration,omitempty"`
+	KeepDown      bool           `protobuf:"varint,7,opt,name=keep_down,json=keepDown,proto3" json:"keep_down,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -401,29 +390,18 @@ func (x *Finger) GetStartElement() *ElementSelector {
 	return nil
 }
 
-func (x *Finger) GetEnd() isFinger_End {
+func (x *Finger) GetWidth() uint32 {
 	if x != nil {
-		return x.End
+		return x.Width
 	}
-	return nil
+	return 0
 }
 
-func (x *Finger) GetEndPoint() *Point {
+func (x *Finger) GetHeight() uint32 {
 	if x != nil {
-		if x, ok := x.End.(*Finger_EndPoint); ok {
-			return x.EndPoint
-		}
+		return x.Height
 	}
-	return nil
-}
-
-func (x *Finger) GetEndElement() *ElementSelector {
-	if x != nil {
-		if x, ok := x.End.(*Finger_EndElement); ok {
-			return x.EndElement
-		}
-	}
-	return nil
+	return 0
 }
 
 func (x *Finger) GetDuration() int32 {
@@ -455,22 +433,6 @@ type Finger_StartElement struct {
 func (*Finger_StartPoint) isFinger_Start() {}
 
 func (*Finger_StartElement) isFinger_Start() {}
-
-type isFinger_End interface {
-	isFinger_End()
-}
-
-type Finger_EndPoint struct {
-	EndPoint *Point `protobuf:"bytes,110,opt,name=end_point,json=endPoint,proto3,oneof"`
-}
-
-type Finger_EndElement struct {
-	EndElement *ElementSelector `protobuf:"bytes,111,opt,name=end_element,json=endElement,proto3,oneof"`
-}
-
-func (*Finger_EndPoint) isFinger_End() {}
-
-func (*Finger_EndElement) isFinger_End() {}
 
 type ActionSwipe struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -832,26 +794,23 @@ const file_action_manager_proto_rawDesc = "" +
 	"\x04left\x18\x01 \x01(\x05R\x04left\x12\x10\n" +
 	"\x03top\x18\x02 \x01(\x05R\x03top\x12\x14\n" +
 	"\x05right\x18\x03 \x01(\x05R\x05right\x12\x16\n" +
-	"\x06bottom\x18\x04 \x01(\x05R\x06bottom\"X\n" +
+	"\x06bottom\x18\x04 \x01(\x05R\x06bottom\"D\n" +
 	"\x0fElementSelector\x12\x1b\n" +
-	"\tunique_id\x18\x01 \x01(\tR\buniqueId\x12\x12\n" +
-	"\x04path\x18\x02 \x03(\x05R\x04path\x12\x14\n" +
+	"\tunique_id\x18\x01 \x01(\tR\buniqueId\x12\x14\n" +
 	"\x05regex\x18\x04 \x01(\tR\x05regex\"#\n" +
 	"\x05Point\x12\f\n" +
 	"\x01x\x18\x01 \x01(\x05R\x01x\x12\f\n" +
-	"\x01y\x18\x02 \x01(\x05R\x01y\"\xa2\x03\n" +
+	"\x01y\x18\x02 \x01(\x05R\x01y\"\xb3\x02\n" +
 	"\x06Finger\x12\x1b\n" +
 	"\tfinger_id\x18\x01 \x01(\x05R\bfingerId\x12F\n" +
 	"\vstart_point\x18d \x01(\v2#.service.accessibility.bridge.PointH\x00R\n" +
 	"startPoint\x12T\n" +
-	"\rstart_element\x18e \x01(\v2-.service.accessibility.bridge.ElementSelectorH\x00R\fstartElement\x12B\n" +
-	"\tend_point\x18n \x01(\v2#.service.accessibility.bridge.PointH\x01R\bendPoint\x12P\n" +
-	"\vend_element\x18o \x01(\v2-.service.accessibility.bridge.ElementSelectorH\x01R\n" +
-	"endElement\x12\x1a\n" +
+	"\rstart_element\x18e \x01(\v2-.service.accessibility.bridge.ElementSelectorH\x00R\fstartElement\x12\x14\n" +
+	"\x05width\x18\x02 \x01(\rR\x05width\x12\x16\n" +
+	"\x06height\x18\x03 \x01(\rR\x06height\x12\x1a\n" +
 	"\bduration\x18\x06 \x01(\x05R\bduration\x12\x1b\n" +
 	"\tkeep_down\x18\a \x01(\bR\bkeepDownB\a\n" +
-	"\x05startB\x05\n" +
-	"\x03end\"K\n" +
+	"\x05start\"K\n" +
 	"\vActionSwipe\x12<\n" +
 	"\x06finger\x18\x01 \x01(\v2$.service.accessibility.bridge.FingerR\x06finger\"P\n" +
 	"\x10ActionMultiTouch\x12<\n" +
@@ -923,19 +882,17 @@ var file_action_manager_proto_depIdxs = []int32{
 	1,  // 1: service.accessibility.bridge.ScreenView.children:type_name -> service.accessibility.bridge.ScreenView
 	3,  // 2: service.accessibility.bridge.Finger.start_point:type_name -> service.accessibility.bridge.Point
 	2,  // 3: service.accessibility.bridge.Finger.start_element:type_name -> service.accessibility.bridge.ElementSelector
-	3,  // 4: service.accessibility.bridge.Finger.end_point:type_name -> service.accessibility.bridge.Point
-	2,  // 5: service.accessibility.bridge.Finger.end_element:type_name -> service.accessibility.bridge.ElementSelector
-	4,  // 6: service.accessibility.bridge.ActionSwipe.finger:type_name -> service.accessibility.bridge.Finger
-	4,  // 7: service.accessibility.bridge.ActionMultiTouch.finger:type_name -> service.accessibility.bridge.Finger
-	3,  // 8: service.accessibility.bridge.ActionClick.click_point:type_name -> service.accessibility.bridge.Point
-	2,  // 9: service.accessibility.bridge.ActionClick.click_element:type_name -> service.accessibility.bridge.ElementSelector
-	2,  // 10: service.accessibility.bridge.ActionTypeText.selector:type_name -> service.accessibility.bridge.ElementSelector
-	0,  // 11: service.accessibility.bridge.ActionKey.key:type_name -> service.accessibility.bridge.ActionKey.Key
-	12, // [12:12] is the sub-list for method output_type
-	12, // [12:12] is the sub-list for method input_type
-	12, // [12:12] is the sub-list for extension type_name
-	12, // [12:12] is the sub-list for extension extendee
-	0,  // [0:12] is the sub-list for field type_name
+	4,  // 4: service.accessibility.bridge.ActionSwipe.finger:type_name -> service.accessibility.bridge.Finger
+	4,  // 5: service.accessibility.bridge.ActionMultiTouch.finger:type_name -> service.accessibility.bridge.Finger
+	3,  // 6: service.accessibility.bridge.ActionClick.click_point:type_name -> service.accessibility.bridge.Point
+	2,  // 7: service.accessibility.bridge.ActionClick.click_element:type_name -> service.accessibility.bridge.ElementSelector
+	2,  // 8: service.accessibility.bridge.ActionTypeText.selector:type_name -> service.accessibility.bridge.ElementSelector
+	0,  // 9: service.accessibility.bridge.ActionKey.key:type_name -> service.accessibility.bridge.ActionKey.Key
+	10, // [10:10] is the sub-list for method output_type
+	10, // [10:10] is the sub-list for method input_type
+	10, // [10:10] is the sub-list for extension type_name
+	10, // [10:10] is the sub-list for extension extendee
+	0,  // [0:10] is the sub-list for field type_name
 }
 
 func init() { file_action_manager_proto_init() }
@@ -946,8 +903,6 @@ func file_action_manager_proto_init() {
 	file_action_manager_proto_msgTypes[3].OneofWrappers = []any{
 		(*Finger_StartPoint)(nil),
 		(*Finger_StartElement)(nil),
-		(*Finger_EndPoint)(nil),
-		(*Finger_EndElement)(nil),
 	}
 	file_action_manager_proto_msgTypes[6].OneofWrappers = []any{
 		(*ActionClick_ClickPoint)(nil),

@@ -320,8 +320,8 @@ type Finger struct {
 	//	*Finger_StartPoint
 	//	*Finger_StartElement
 	Start         isFinger_Start `protobuf_oneof:"start"`
-	Width         uint32         `protobuf:"varint,2,opt,name=width,proto3" json:"width,omitempty"`
-	Height        uint32         `protobuf:"varint,3,opt,name=height,proto3" json:"height,omitempty"`
+	Width         int32          `protobuf:"varint,2,opt,name=width,proto3" json:"width,omitempty"`
+	Height        int32          `protobuf:"varint,3,opt,name=height,proto3" json:"height,omitempty"`
 	Duration      int32          `protobuf:"varint,6,opt,name=duration,proto3" json:"duration,omitempty"`
 	KeepDown      bool           `protobuf:"varint,7,opt,name=keep_down,json=keepDown,proto3" json:"keep_down,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -390,14 +390,14 @@ func (x *Finger) GetStartElement() *ElementSelector {
 	return nil
 }
 
-func (x *Finger) GetWidth() uint32 {
+func (x *Finger) GetWidth() int32 {
 	if x != nil {
 		return x.Width
 	}
 	return 0
 }
 
-func (x *Finger) GetHeight() uint32 {
+func (x *Finger) GetHeight() int32 {
 	if x != nil {
 		return x.Height
 	}
@@ -806,8 +806,8 @@ const file_action_manager_proto_rawDesc = "" +
 	"\vstart_point\x18d \x01(\v2#.service.accessibility.bridge.PointH\x00R\n" +
 	"startPoint\x12T\n" +
 	"\rstart_element\x18e \x01(\v2-.service.accessibility.bridge.ElementSelectorH\x00R\fstartElement\x12\x14\n" +
-	"\x05width\x18\x02 \x01(\rR\x05width\x12\x16\n" +
-	"\x06height\x18\x03 \x01(\rR\x06height\x12\x1a\n" +
+	"\x05width\x18\x02 \x01(\x05R\x05width\x12\x16\n" +
+	"\x06height\x18\x03 \x01(\x05R\x06height\x12\x1a\n" +
 	"\bduration\x18\x06 \x01(\x05R\bduration\x12\x1b\n" +
 	"\tkeep_down\x18\a \x01(\bR\bkeepDownB\a\n" +
 	"\x05start\"K\n" +
